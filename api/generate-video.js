@@ -2,16 +2,17 @@ import crypto from "crypto";
 
 export default async function handler(req, res) {
 
-  // ✅ CORS FIX (GANZ WICHTIG)
+  // 🔥 ULTRA WICHTIG – IMMER ALS ERSTES
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-  // 👉 Preflight Request behandeln
+  // ✅ PRE-FLIGHT REQUEST RICHTIG BEANTWORTEN
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
+  // ❌ ALLES ANDERE BLOCKEN
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
