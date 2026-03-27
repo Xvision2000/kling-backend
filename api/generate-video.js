@@ -1,3 +1,7 @@
+export const config = {
+  runtime: "nodejs"
+};
+
 import crypto from "crypto";
 
 export default async function handler(req, res) {
