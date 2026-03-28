@@ -1,8 +1,4 @@
-export const config = {
-  runtime: "nodejs"
-};
-
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
 
   try {
     // ✅ CORS
