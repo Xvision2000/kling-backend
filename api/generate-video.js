@@ -55,14 +55,22 @@ console.log("PROMPT:", prompt);
   }),
 });
 
-    const data = await response.json();
+    let data;
+let text;
 
-    if (!response.ok) {
-  const errorText = await response.text();
+try {
+  text = await response.text();
+  data = JSON.parse(text);
+} catch (e) {
+  data = { raw: text };
+}
+
+if (!response.ok) {
+  console.error("KLING ERROR RESPONSE:", data);
 
   return res.status(response.status).json({
     error: "Kling API error",
-    details: errorText
+    details: data
   });
 }
 
