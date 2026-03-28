@@ -26,6 +26,9 @@ if (typeof body === "string") {
 
 const { prompt } = body || {};
 
+    console.log("BODY:", body);
+console.log("PROMPT:", prompt);
+
     if (!prompt) {
       return res.status(400).json({ error: "Missing prompt" });
     }
