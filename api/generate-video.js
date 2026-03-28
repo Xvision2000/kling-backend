@@ -91,8 +91,10 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({
-      videoUrl
-    });
+  taskId: data.request_id || data.id || "fallback-id",
+  status: "processing",
+  raw: data
+});
 
   } catch (error) {
     console.error("BACKEND ERROR:", error);
