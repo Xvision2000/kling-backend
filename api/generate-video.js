@@ -48,13 +48,11 @@ const response = await fetch("https://api.klingai.com/v1/videos/image-to-video",
   },
   body: JSON.stringify({
     model: "kling-v1",
-    input: {
-      prompt: prompt,
-      image: body.imageUrl
+    prompt: prompt,
+    image: {
+      url: body.imageUrl
     },
-    config: {
-      duration: body.duration || 3
-    }
+    duration: body.duration || 3
   }),
 });
 
