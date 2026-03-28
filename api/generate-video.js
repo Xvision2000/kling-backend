@@ -48,9 +48,8 @@ console.log("PROMPT:", prompt);
   },
   body: JSON.stringify({
     model: "kling-v1",
-    mode: "image-to-video",
     prompt: prompt,
-    image: body.imageUrl,
+    image_url: body.imageUrl,
     duration: body.duration || 3
   }),
 });
