@@ -18,7 +18,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt } = req.body;
+    let body = req.body;
+
+if (typeof body === "string") {
+  body = JSON.parse(body);
+}
+
+const { prompt } = body || {};
 
     if (!prompt) {
       return res.status(400).json({ error: "Missing prompt" });
