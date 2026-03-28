@@ -1,22 +1,28 @@
-export const config = {
-  runtime: "nodejs"
-};
-
 import crypto from "crypto";
 
 export default async function handler(req, res) {
 
+  // 🔥 IMMER setzen
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
+  // ✅ PRE-FLIGHT MUSS IMMER funktionieren
   if (req.method === "OPTIONS") {
-    return res.status(200).end();
+    return res.status(200).json({ ok: true });
   }
 
+  // ❌ alles außer POST blocken
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
+
+  try {
+    const { prompt } = req.body;
+
+    if (!prompt) {
+      return res.status(400).json({ error: "Missing prompt" });
+    }
 
     const ACCESS_KEY = process.env.KLING_ACCESS_KEY;
     const SECRET_KEY = process.env.KLING_SECRET_KEY;
@@ -53,44 +59,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const jobId = data?.job_id;
-
-    if (!jobId) {
-      return res.status(500).json({
-        error: "No job_id returned",
-        data,
-      });
-    }
-
-    let videoUrl = null;
-
-    for (let i = 0; i < 20; i++) {
-      await new Promise((r) => setTimeout(r, 3000));
-
-      const statusRes = await fetch(
-        `https://api.kling.ai/v1/video/status/${jobId}`,
-        {
-          headers: {
-            "Access-Key": ACCESS_KEY,
-          },
-        }
-      );
-
-      const statusData = await statusRes.json();
-
-      if (statusData.status === "completed") {
-        videoUrl = statusData.video_url;
-        break;
-      }
-    }
-
-    if (!videoUrl) {
-      return res.status(500).json({
-        error: "Video generation timeout",
-      });
-    }
-
-    return res.status(200).json({ videoUrl });
+    return res.status(200).json(data);
 
   } catch (error) {
     console.error("BACKEND ERROR:", error);
