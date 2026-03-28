@@ -40,14 +40,6 @@ console.log("PROMPT:", prompt);
       return res.status(500).json({ error: "Missing API keys" });
     }
 
-    const timestamp = Date.now().toString();
-    const payload = JSON.stringify({ prompt });
-
-    const signature = crypto
-      .createHmac("sha256", SECRET_KEY)
-      .update(timestamp + payload)
-      .digest("hex");
-
     const response = await fetch("https://api.klingai.com/v1/videos/image-to-video", {
   method: "POST",
   headers: {
