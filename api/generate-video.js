@@ -40,7 +40,7 @@ console.log("PROMPT:", prompt);
       return res.status(500).json({ error: "Missing API keys" });
     }
 
-    const response = await fetch("https://api.klingai.com/v1/videos/image-to-video", {
+const response = await fetch("https://api.klingai.com/v1/videos/image-to-video", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -48,9 +48,13 @@ console.log("PROMPT:", prompt);
   },
   body: JSON.stringify({
     model: "kling-v1",
-    prompt: prompt,
-    image_url: body.imageUrl,
-    duration: body.duration || 3
+    input: {
+      prompt: prompt,
+      image: body.imageUrl
+    },
+    config: {
+      duration: body.duration || 3
+    }
   }),
 });
 
