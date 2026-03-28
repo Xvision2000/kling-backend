@@ -48,16 +48,18 @@ console.log("PROMPT:", prompt);
       .update(timestamp + payload)
       .digest("hex");
 
-    const response = await fetch("https://api.kling.ai/v1/video/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Key": ACCESS_KEY,
-        "Timestamp": timestamp,
-        "Signature": signature,
-      },
-      body: payload,
-    });
+    const response = await fetch("https://api.klingai.com/v1/videos/image-to-video", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${ACCESS_KEY}`,
+  },
+  body: JSON.stringify({
+    prompt,
+    image_url: body.imageUrl,
+    duration: body.duration || 3
+  }),
+});
 
     const data = await response.json();
 
