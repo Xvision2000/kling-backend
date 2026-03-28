@@ -58,11 +58,13 @@ console.log("PROMPT:", prompt);
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json({
-        error: "Kling API error",
-        details: data,
-      });
-    }
+  const errorText = await response.text();
+
+  return res.status(response.status).json({
+    error: "Kling API error",
+    details: errorText
+  });
+}
 
     return res.status(200).json(data);
 
