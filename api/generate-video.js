@@ -1,5 +1,4 @@
 module.exports = async function handler(req, res) {
-
   try {
     // ✅ CORS
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -14,9 +13,8 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ status: "API running" });
     }
 
-    // ✅ Body safe
+    // ✅ Body fix
     let body = req.body;
-
     if (typeof body === "string") {
       body = JSON.parse(body);
     }
@@ -38,7 +36,7 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // 🎬 ASYNC fal.ai CALL
+    // 🎬 fal.ai request
     const falResponse = await fetch(
       "https://queue.fal.run/fal-ai/minimax/video-01/image-to-video",
       {
@@ -61,28 +59,25 @@ module.exports = async function handler(req, res) {
 
     if (!falResponse.ok) {
       console.error("FAL ERROR:", data);
-
       return res.status(500).json({
         error: "fal.ai error",
         details: data
       });
     }
 
-    // ✅ taskId zurückgeben (WICHTIG!)
+    // ✅ TASK ID FIX
     const taskId = data?.request_id || data?.id;
 
-if (!taskId) {
-  console.error("FAL RESPONSE:", data);
+    if (!taskId) {
+      console.error("NO TASK ID:", data);
+      return res.status(500).json({
+        error: "No taskId from fal",
+        details: data
+      });
+    }
 
-  return res.status(500).json({
-    error: "No taskId from fal",
-    details: data
-  });
-}
-
-return res.status(200).json({
-  taskId: taskId
-});
+    return res.status(200).json({
+      taskId: taskId
     });
 
   } catch (err) {
@@ -93,4 +88,4 @@ return res.status(200).json({
       message: err.message
     });
   }
-}
+};
