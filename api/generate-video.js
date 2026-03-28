@@ -47,8 +47,10 @@ console.log("PROMPT:", prompt);
     "Authorization": `Bearer ${ACCESS_KEY}`,
   },
   body: JSON.stringify({
-    prompt,
-    image_url: body.imageUrl,
+    model: "kling-v1",
+    mode: "image-to-video",
+    prompt: prompt,
+    image: body.imageUrl,
     duration: body.duration || 3
   }),
 });
