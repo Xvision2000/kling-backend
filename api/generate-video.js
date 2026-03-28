@@ -69,14 +69,18 @@ export default async function handler(req, res) {
       data = { raw: text };
     }
 
-    if (!response.ok) {
-      console.error("FAL ERROR:", data);
+    const data = await response.json();
 
-      return res.status(500).json({
-        error: "fal.ai error",
-        details: data
-      });
-    }
+if (!response.ok) {
+  return res.status(500).json({
+    error: "fal.ai error",
+    details: data
+  });
+}
+
+return res.status(200).json({
+  taskId: data.request_id
+});
 
     // ✅ Video URL extrahieren (fal Struktur)
     const videoUrl =
