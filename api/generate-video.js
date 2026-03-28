@@ -56,7 +56,7 @@ module.exports = async function handler(req, res) {
     );
 
     const data = await falResponse.json();
-
+console.log("FAL FULL RESPONSE:", JSON.stringify(data));
     if (!falResponse.ok) {
       console.error("FAL ERROR:", data);
       return res.status(500).json({
@@ -77,8 +77,8 @@ module.exports = async function handler(req, res) {
     }
 
     return res.status(200).json({
-      taskId: taskId
-    });
+  debug: data
+});
 
   } catch (err) {
     console.error("CRASH:", err);
