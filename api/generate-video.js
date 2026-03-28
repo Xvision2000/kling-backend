@@ -73,8 +73,20 @@ export default async function handler(req, res) {
     }
 
     // ✅ taskId zurückgeben (WICHTIG!)
-    return res.status(200).json({
-      taskId: data.request_id || data.id
+    const taskId = data?.request_id || data?.id;
+
+if (!taskId) {
+  console.error("FAL RESPONSE:", data);
+
+  return res.status(500).json({
+    error: "No taskId from fal",
+    details: data
+  });
+}
+
+return res.status(200).json({
+  taskId: taskId
+});
     });
 
   } catch (err) {
