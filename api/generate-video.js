@@ -40,20 +40,22 @@ export default async function handler(req, res) {
 
     // 🎬 fal.ai Request
     const response = await fetch(
-      "https://fal.run/fal-ai/minimax/video-01/image-to-video",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Key ${FAL_KEY}`,
-        },
-        body: JSON.stringify({
-          prompt: prompt + ", cinematic animation, smooth motion, camera movement, no static frames, consistent characters",
-          image_url: imageUrl,
-          num_frames: 49,
-          fps: 8,
-          aspect_ratio: "9:16"
-        }),
+  "https://queue.fal.run/fal-ai/minimax/video-01/image-to-video",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Key ${process.env.FAL_KEY}`,
+    },
+    body: JSON.stringify({
+      prompt: prompt + ", cinematic animation, smooth motion, no static frames",
+      image_url: imageUrl,
+      num_frames: 49,
+      fps: 8,
+      aspect_ratio: "9:16"
+    }),
+  }
+);
       }
     );
 
